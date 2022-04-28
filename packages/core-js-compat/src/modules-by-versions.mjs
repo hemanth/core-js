@@ -139,4 +139,7 @@ export default {
     'web.atob',
     'web.btoa',
   ],
+  3.23: [
+    'es.array.push',
+  ],
 };
