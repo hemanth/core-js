@@ -1,5 +1,6 @@
 ## Changelog
 ##### Unreleased
+- [Decorator Metadata proposal](https://github.com/tc39/proposal-decorator-metadata) extracted from [Decorators proposal](https://github.com/tc39/proposal-decorators), `Symbol.metadataKey` replaces `Symbol.metadata`
 - Fixed a bug in the order of getting flags in `RegExp.prototype.flags` in the actual version of V8
 - Fixed property descriptors of some `Math` and `Number` constants
 - Added detection of NodeJS [bug](https://github.com/nodejs/node/issues/41038) in `structuredClone` that can not clone `DOMException` (just in case for future versions that will fix other issues)
