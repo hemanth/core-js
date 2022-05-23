@@ -139,4 +139,8 @@ export default {
     'web.atob',
     'web.btoa',
   ],
+  3.23: [
+    'esnext.array.group',
+    'esnext.array.group-to-map',
+  ],
 };

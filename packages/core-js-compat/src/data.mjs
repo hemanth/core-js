@@ -1579,9 +1579,15 @@ export const data = {
     chrome: '97',
     safari: '15.4',
   },
+  'esnext.array.group': {
+  },
+  // TODO: Remove from `core-js@4`
   'esnext.array.group-by': {
   },
+  // TODO: Remove from `core-js@4`
   'esnext.array.group-by-to-map': {
+  },
+  'esnext.array.group-to-map': {
   },
   'esnext.array.is-template-object': {
   },

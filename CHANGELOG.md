@@ -1,5 +1,8 @@
 ## Changelog
 ##### Unreleased
+- Methods from [the `Array` grouping proposal](https://github.com/tc39/proposal-array-grouping) [renamed](https://github.com/tc39/proposal-array-grouping/pull/39):
+  - `Array.prototype.groupBy` -> `Array.prototype.group`
+  - `Array.prototype.groupByToMap` -> `Array.prototype.groupToMap`
 - Fixed a bug in the order of getting flags in `RegExp.prototype.flags` in the actual version of V8
 - Fixed property descriptors of some `Math` and `Number` constants
 - Added detection of NodeJS [bug](https://github.com/nodejs/node/issues/41038) in `structuredClone` that can not clone `DOMException` (just in case for future versions that will fix other issues)
