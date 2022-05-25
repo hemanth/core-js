@@ -1,5 +1,10 @@
 ## Changelog
 ##### Unreleased
+- [`Array` find from last](https://github.com/tc39/proposal-array-find-from-last) moved to the stable ES, per June 2022 TC39 meeting
+  - `Array.prototype.findLast`
+  - `Array.prototype.findIndex`
+  - `%TypedArray%.prototype.findLast`
+  - `%TypedArray%.prototype.findIndex`
 - Fixed a bug in the order of getting flags in `RegExp.prototype.flags` in the actual version of V8
 - Fixed property descriptors of some `Math` and `Number` constants
 - Added detection of NodeJS [bug](https://github.com/nodejs/node/issues/41038) in `structuredClone` that can not clone `DOMException` (just in case for future versions that will fix other issues)
