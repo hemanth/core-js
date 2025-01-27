@@ -1,11 +1,11 @@
 npm-shrinkwrap.json
-package-lock.json
 yarn.lock
 node_modules/
 *.tmp
 *.log
 *.bak
 *.swp
+.DS_Store
 
 /packages/core-js/features/
 /packages/core-js/es/index.js
@@ -38,8 +38,8 @@ node_modules/
 /packages/core-js-pure/index.js
 /packages/core-js-pure/configurator.js
 /packages/core-js-pure/postinstall.js
-/tests/bundles/
+/tests/**/bundles/
 /tests/compat/*.jar
 /tests/compat/compat-data.js
-/tests/tests/index.js
-/tests/pure/index.js
+/tests/unit-global/index.js
+/tests/unit-pure/index.js

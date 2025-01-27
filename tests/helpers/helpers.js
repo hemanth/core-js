@@ -4,7 +4,7 @@ import ASYNC_ITERATOR from 'core-js-pure/es/symbol/async-iterator';
 
 export function is(a, b) {
   // eslint-disable-next-line no-self-compare -- NaN check
-  return a === b ? a !== 0 || 1 / a === 1 / b : a != a && b != b;
+  return a === b ? a !== 0 || 1 / a === 1 / b : a !== a && b !== b;
 }
 
 export function createIterator(elements, methods) {
@@ -21,6 +21,18 @@ export function createIterator(elements, methods) {
   };
   if (methods) for (const key in methods) iterator[key] = methods[key];
   return iterator;
+}
+
+export function createSetLike(elements) {
+  return {
+    size: elements.length,
+    has(it) {
+      return includes(elements, it);
+    },
+    keys() {
+      return createIterator(elements);
+    },
+  };
 }
 
 export function createIterable(elements, methods) {
@@ -112,9 +124,10 @@ export const nativeSubclass = (() => {
   } catch { /* empty */ }
 })();
 
-export function timeLimitedPromise(time, fn) {
+export function timeLimitedPromise(time, functionOrPromise) {
   return Promise.race([
-    new Promise(fn), new Promise((resolve, reject) => {
+    typeof functionOrPromise == 'function' ? new Promise(functionOrPromise) : functionOrPromise,
+    new Promise((resolve, reject) => {
       setTimeout(reject, time);
     }),
   ]);
@@ -126,8 +139,8 @@ export function patchRegExp$exec(run) {
   return assert => {
     const originalExec = RegExp.prototype.exec;
     // eslint-disable-next-line no-extend-native -- required for testing
-    RegExp.prototype.exec = function () {
-      return originalExec.apply(this, arguments);
+    RegExp.prototype.exec = function (...args) {
+      return originalExec.apply(this, args);
     };
     try {
       return run(assert);
@@ -145,4 +158,23 @@ export function fromSource(source) {
   try {
     return Function(`return ${ source }`)();
   } catch { /* empty */ }
+}
+
+export function arrayToBuffer(array) {
+  const { length } = array;
+  const buffer = new ArrayBuffer(length);
+  const view = new DataView(buffer);
+  for (let i = 0; i < length; ++i) {
+    view.setUint8(i, array[i]);
+  }
+  return buffer;
+}
+
+export function bufferToArray(buffer) {
+  const array = [];
+  const view = new DataView(buffer);
+  for (let i = 0, { byteLength } = view; i < byteLength; ++i) {
+    array.push(view.getUint8(i));
+  }
+  return array;
 }
