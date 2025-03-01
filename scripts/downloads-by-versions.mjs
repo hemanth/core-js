@@ -9,15 +9,16 @@ const downloadsByMajor = {};
 let total = 0;
 
 async function getStat(pkg) {
-  const res = await fetch(`https://www.npmjs.com/package/${ pkg }`);
-  const html = await res.text();
-  const [, json] = html.match(/>window\.__context__ = ([^<]+)<\//);
-  return JSON.parse(json).context.versionsDownloads;
+  const res = await fetch(`https://api.npmjs.org/versions/${ encodeURIComponent(pkg) }/last-week`);
+  const { downloads } = await res.json();
+  return downloads;
 }
 
 const [core, pure, bundle] = await Promise.all([
   getStat('core-js'),
+  // eslint-disable-next-line unicorn/prefer-top-level-await -- false positive
   ALL && getStat('core-js-pure'),
+  // eslint-disable-next-line unicorn/prefer-top-level-await -- false positive
   ALL && getStat('core-js-bundle'),
 ]);
 
@@ -25,10 +26,10 @@ for (let [patch, downloads] of Object.entries(core)) {
   const version = coerce(patch);
   const { major } = version;
   const minor = `${ major }.${ version.minor }`;
-  if (ALL) downloads += (pure[patch] || 0) + (bundle[patch] || 0);
+  if (ALL) downloads += (pure[patch] ?? 0) + (bundle[patch] ?? 0);
   downloadsByPatch[patch] = downloads;
-  downloadsByMinor[minor] = (downloadsByMinor[minor] || 0) + downloads;
-  downloadsByMajor[major] = (downloadsByMajor[major] || 0) + downloads;
+  downloadsByMinor[minor] = (downloadsByMinor[minor] ?? 0) + downloads;
+  downloadsByMajor[major] = (downloadsByMajor[major] ?? 0) + downloads;
   total += downloads;
 }
 

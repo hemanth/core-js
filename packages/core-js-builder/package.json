@@ -1,26 +1,33 @@
 {
   "name": "core-js-builder",
+  "version": "3.41.0",
+  "type": "commonjs",
   "description": "core-js builder",
-  "version": "3.25.2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zloirock/core-js.git",
+    "url": "git+https://github.com/zloirock/core-js.git",
     "directory": "packages/core-js-builder"
-  },
-  "main": "index.js",
-  "sideEffects": false,
-  "dependencies": {
-    "core-js": "3.25.2",
-    "core-js-compat": "3.25.2",
-    "mkdirp": ">=0.5.5 <1",
-    "webpack": ">=4.46.0 <5"
-  },
-  "engines": {
-    "node": ">=8.9.0"
   },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/core-js"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "author": {
+    "name": "Denis Pushkarev",
+    "email": "zloirock@zloirock.ru",
+    "url": "http://zloirock.ru"
+  },
+  "sideEffects": false,
+  "main": "index.js",
+  "types": "index.d.ts",
+  "dependencies": {
+    "core-js": "3.41.0",
+    "core-js-compat": "3.41.0",
+    "mkdirp": ">=0.5.6 <1",
+    "webpack": ">=4.47.0 <5"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  }
 }

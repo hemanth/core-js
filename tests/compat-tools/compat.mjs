@@ -1,4 +1,4 @@
-import { deepEqual } from 'assert/strict';
+import { deepEqual, ok } from 'node:assert/strict';
 import compat from 'core-js-compat/compat.js';
 
 deepEqual(compat({
@@ -16,6 +16,7 @@ deepEqual(compat({
     'es.array.at',
     'es.math.clz32',
     'es.math.expm1',
+    'es.math.f16round',
     'es.math.to-string-tag',
     'es.reflect.apply',
     'es.reflect.construct',
@@ -35,6 +36,7 @@ deepEqual(compat({
     'es.array.at': { firefox: '27' },
     'es.math.clz32': { firefox: '27' },
     'es.math.expm1': { firefox: '27' },
+    'es.math.f16round': { firefox: '27' },
     'es.math.to-string-tag': { firefox: '27' },
     'es.reflect.apply': { firefox: '27' },
     'es.reflect.construct': { firefox: '27' },
@@ -107,6 +109,7 @@ deepEqual(compat({
     'es.math.acosh',
     'es.math.clz32',
     'es.math.expm1',
+    'es.math.f16round',
     'es.math.hypot',
     'es.math.to-string-tag',
   ],
@@ -114,9 +117,21 @@ deepEqual(compat({
     'es.math.acosh': { chrome: '40' },
     'es.math.clz32': { firefox: '27' },
     'es.math.expm1': { firefox: '27' },
+    'es.math.f16round': { chrome: '40', firefox: '27' },
     'es.math.hypot': { chrome: '40' },
     'es.math.to-string-tag': { chrome: '40', firefox: '27' },
   },
 }, 'some targets');
+
+const { list: inverted1 } = compat({ targets: { esmodules: true }, inverse: true });
+
+ok(inverted1.includes('es.symbol.iterator'), 'inverse #1');
+ok(!inverted1.includes('esnext.iterator.from'), 'inverse #2');
+ok(!inverted1.includes('esnext.array.at'), 'inverse #3');
+
+const { list: inverted2 } = compat({ modules: 'core-js/es/math', targets: { esmodules: true }, inverse: true });
+
+ok(inverted2.includes('es.math.acosh'), 'inverse #4');
+ok(!inverted2.includes('es.map'), 'inverse #5');
 
 echo(chalk.green('compat tool tested'));

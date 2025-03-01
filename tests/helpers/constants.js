@@ -1,6 +1,8 @@
+import defineProperty from 'core-js-pure/es/object/define-property';
+
 export const DESCRIPTORS = !!(() => {
   try {
-    return Object.defineProperty({}, 'a', {
+    return defineProperty({}, 'a', {
       get() {
         return 7;
       },
@@ -12,7 +14,9 @@ export const GLOBAL = Function('return this')();
 
 export const NATIVE = GLOBAL.NATIVE || false;
 
-export const NODE = Object.prototype.toString.call(GLOBAL.process).slice(8, -1) === 'process';
+export const NODE = typeof Bun == 'undefined' && Object.prototype.toString.call(GLOBAL.process).slice(8, -1) === 'process';
+
+export const BUN = typeof Bun != 'undefined' && Object.prototype.toString.call(GLOBAL.process).slice(8, -1) === 'process';
 
 const $TYPED_ARRAYS = {
   Float32Array: 4,
@@ -35,13 +39,13 @@ for (const name in $TYPED_ARRAYS) TYPED_ARRAYS.push({
   $: Number,
 });
 
-export const TYPED_ARRAYS_WITH_BIG_INT = TYPED_ARRAYS.slice();
+export const TYPED_ARRAYS_WITH_BIG_INT = [...TYPED_ARRAYS];
 
 for (const name of ['BigInt64Array', 'BigUint64Array']) if (GLOBAL[name]) TYPED_ARRAYS_WITH_BIG_INT.push({
   name,
   TypedArray: GLOBAL[name],
   bytes: 8,
-  // eslint-disable-next-line es-x/no-bigint -- safe
+  // eslint-disable-next-line es/no-bigint -- safe
   $: BigInt,
 });
 
@@ -55,13 +59,19 @@ export const LITTLE_ENDIAN = (() => {
 
 export const PROTO = !!Object.setPrototypeOf || '__proto__' in Object.prototype;
 
-export const STRICT = !function () {
-  return this;
-}();
+export let REDEFINABLE_PROTO = false;
+
+try {
+  // Chrome 27- bug, also a bug for native `JSON.parse`
+  defineProperty({}, '__proto__', { value: 42, writable: true, configurable: true, enumerable: true });
+  REDEFINABLE_PROTO = true;
+} catch { /* empty */ }
 
 export const STRICT_THIS = (function () {
   return this;
 })();
+
+export const STRICT = !STRICT_THIS;
 
 export const FREEZING = !function () {
   try {
@@ -84,7 +94,7 @@ export const CORRECT_PROTOTYPE_GETTER = !function () {
 // FF < 23 bug
 export const REDEFINABLE_ARRAY_LENGTH_DESCRIPTOR = DESCRIPTORS && !function () {
   try {
-    Object.defineProperty([], 'length', { writable: false });
+    defineProperty([], 'length', { writable: false });
   } catch {
     return true;
   }

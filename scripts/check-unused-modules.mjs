@@ -2,7 +2,8 @@ import konan from 'konan';
 import { modules, ignored } from 'core-js-compat/src/data.mjs';
 
 async function jsModulesFrom(path) {
-  return new Set((await fs.readdir(path)).filter(it => it.endsWith('.js')).map(it => it.slice(0, -3)));
+  const directory = await fs.readdir(path);
+  return new Set(directory.filter(it => it.endsWith('.js')).map(it => it.slice(0, -3)));
 }
 
 function log(set, kind) {
@@ -29,7 +30,7 @@ const allModules = await glob('packages/core-js?(-pure)/**/*.js');
 
 await Promise.all(allModules.map(async path => {
   for (const dependency of konan(String(await fs.readFile(path))).strings) {
-    internalModules.delete(dependency.match(/\/internals\/([^/]+)$/)?.[1]);
+    internalModules.delete(dependency.match(/\/internals\/(?<module>[^/]+)$/)?.groups.module);
   }
 }));
 

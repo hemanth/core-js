@@ -1,8 +1,8 @@
-import { deepEqual, throws } from 'assert/strict';
+import { deepEqual, throws } from 'node:assert/strict';
 import getModulesListForTargetVersion from 'core-js-compat/get-modules-list-for-target-version.js';
 
-const modules = require('core-js-compat/modules');
-const modulesByVersions = require('../../packages/core-js-compat/modules-by-versions');
+const modules = await fs.readJson('packages/core-js-compat/modules.json');
+const modulesByVersions = await fs.readJson('packages/core-js-compat/modules-by-versions.json');
 
 const modules30 = modulesByVersions['3.0'];
 const filter = new Set([...modules30, ...modulesByVersions['3.1']]);
